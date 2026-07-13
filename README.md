@@ -4,20 +4,24 @@ Open-source ecommerce base for Kenya, built on [Medusa](https://medusajs.com) (N
 
 ## Structure
 
+- `backend/` — Medusa backend (from `medusajs/medusa-starter-default`), with M-Pesa wired in at `backend/src/modules/mpesa`
 - `storefront/` — Next.js storefront (from `medusajs/nextjs-starter-medusa`)
-- `backend-modules/mpesa/` — Custom M-Pesa (Safaricom Daraja STK Push) payment provider module for the Medusa backend
 
 ## Getting started
 
 ### Backend
-The Medusa backend itself isn't in this repo (it's scaffolded separately). To stand it up:
 
 ```bash
-npx create-medusa-app@latest my-backend
+cd backend
+yarn install
+cp .env.template .env   # fill in DATABASE_URL, CORS, and MPESA_* vars
+yarn medusa db:migrate
+yarn medusa user -e admin@example.com -p supersecret -i admin
+yarn dev   # localhost:9000, admin at /app
 ```
 
-Then copy `backend-modules/mpesa` into `my-backend/src/modules/mpesa` and follow
-`backend-modules/mpesa/README.md` to wire it into `medusa-config.ts`.
+M-Pesa setup (Daraja keys, callback URL, known limitations) is documented in
+`backend/src/modules/mpesa/README.md`.
 
 ### Storefront
 
